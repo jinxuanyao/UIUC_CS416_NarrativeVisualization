@@ -45,12 +45,81 @@ function prevScene () {
 //------------------------------------
 //  SCENE 1  —  Top‑5 Job Titles
 //------------------------------------
+// function drawScene1(data) {
+//   d3.select("#jobSelector").style("display", "none");
+
+//   const svg = d3.select("#viz").append("svg")
+//     .attr("width", 800)
+//     .attr("height", 700);  // 650 → 700
+
+//   const margin = { top: 60, right: 30, bottom: 130, left: 100 };
+//   const width = 800 - margin.left - margin.right;
+//   const height = 600 - margin.top - margin.bottom;
+
+//   const g = svg.append("g")
+//     .attr("transform", `translate(${margin.left},${margin.top})`);
+
+//   const top5 = d3.rollups(data, v => d3.mean(v, d => d.salary_in_usd), d => d.job_title)
+//     .sort((a, b) => d3.descending(a[1], b[1]))
+//     .slice(0, 5);
+
+//   const x = d3.scaleBand()
+//     .domain(top5.map(d => d[0]))
+//     .range([0, width])
+//     .padding(0.2);
+
+//   const y = d3.scaleLinear()
+//     .domain([0, d3.max(top5, d => d[1])])
+//     .range([height, 0]);
+
+//   g.append("text")
+//     .attr("x", width / 2)
+//     .attr("y", -30)
+//     .attr("text-anchor", "middle")
+//     .style("font-size", 18)
+//     .style("font-weight", 600)
+//     .text("Top 5 Job Titles by Avg Salary (USD) in 2025");
+
+//   g.append("g").call(d3.axisLeft(y));
+//   g.append("g")
+//     .attr("transform", `translate(0,${height})`)
+//     .call(d3.axisBottom(x))
+//     .selectAll("text")
+//     .attr("transform", "rotate(-30)")
+//     .style("text-anchor", "end");
+
+//   g.selectAll("rect")
+//     .data(top5)
+//     .enter().append("rect")
+//     .attr("x", d => x(d[0]))
+//     .attr("y", d => y(d[1]))
+//     .attr("width", x.bandwidth())
+//     .attr("height", d => height - y(d[1]))
+//     .attr("fill", "steelblue");
+
+//   g.append("rect")
+//     .attr("x", width / 2 - 220)
+//     .attr("y", height + 80)  // 60 → 80
+//     .attr("width", 440)
+//     .attr("height", 30)
+//     .attr("fill", "#f9f9f9");
+
+//   // annotation
+//   g.append("text")
+//     .attr("x", width / 2)
+//     .attr("y", height + 110)  // 70 → 110
+//     .attr("text-anchor", "middle")
+//     .style("font-size", 13)
+//     .text("These are the 5 highest-paid job titles in 2025 by average salary.");
+// }
+
+// Updated drawScene1 with better annotation placement and content
 function drawScene1(data) {
   d3.select("#jobSelector").style("display", "none");
 
   const svg = d3.select("#viz").append("svg")
     .attr("width", 800)
-    .attr("height", 700);  // 650 → 700
+    .attr("height", 720);  // Increased height for annotation spacing
 
   const margin = { top: 60, right: 30, bottom: 130, left: 100 };
   const width = 800 - margin.left - margin.right;
@@ -97,22 +166,29 @@ function drawScene1(data) {
     .attr("height", d => height - y(d[1]))
     .attr("fill", "steelblue");
 
+  // Annotation box
   g.append("rect")
-    .attr("x", width / 2 - 220)
-    .attr("y", height + 80)  // 60 → 80
-    .attr("width", 440)
-    .attr("height", 30)
+    .attr("x", width / 2 - 250)
+    .attr("y", height + 70)
+    .attr("width", 500)
+    .attr("height", 45)
     .attr("fill", "#f9f9f9");
 
-  // annotation
   g.append("text")
     .attr("x", width / 2)
-    .attr("y", height + 110)  // 70 → 110
+    .attr("y", height + 90)
     .attr("text-anchor", "middle")
     .style("font-size", 13)
     .text("These are the 5 highest-paid job titles in 2025 by average salary.");
-}
 
+  g.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + 105)
+    .attr("text-anchor", "middle")
+    .style("font-size", 12)
+    .style("fill", "#555")
+    .text("Leadership and applied AI roles dominate the top earners.");
+}
 
 
 //------------------------------------
