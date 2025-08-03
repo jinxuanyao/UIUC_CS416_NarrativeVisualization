@@ -48,7 +48,7 @@ function drawScene1(data) {
   const jobAvg = d3.rollups(data, v => d3.mean(v, d => d.salary_in_usd), d => d.job_title);
   const top5 = jobAvg.sort((a, b) => d3.descending(a[1], b[1])).slice(0, 5);
 
-  const margin = { top: 40, right: 30, bottom: 70, left: 100 };
+  const margin = { top: 60, right: 30, bottom: 90, left: 100 };
   const width = 800 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -63,6 +63,16 @@ function drawScene1(data) {
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
+  // title
+  g.append("text")
+   .attr("x", width / 2)
+   .attr("y", -30)
+   .attr("text-anchor", "middle")
+   .style("font-size", "18px")
+   .style("font-weight", "600")
+   .text("Top 5 Job Titles by Avg Salary (USD) in 2025");
+
+  // axes
   g.append("g").call(d3.axisLeft(y));
   g.append("g")
    .attr("transform", `translate(0,${height})`)
@@ -71,6 +81,7 @@ function drawScene1(data) {
    .attr("transform", "rotate(-30)")
    .style("text-anchor", "end");
 
+  // bars
   g.selectAll("rect")
    .data(top5)
    .enter()
@@ -81,19 +92,14 @@ function drawScene1(data) {
    .attr("height", d => height - y(d[1]))
    .attr("fill", "steelblue");
 
+  // annotation under chart
   g.append("text")
    .attr("x", width / 2)
-   .attr("y", -10)
-   .attr("text-anchor", "middle")
-   .text("Top 5 Job Titles by Avg Salary (USD) in 2025")
-   .style("font-size", "16px")
-   .style("font-weight", "bold");
-
-  g.append("text")
-   .attr("x", 0)
    .attr("y", height + 50)
-   .text("These are the top 5 highest-paid job titles in 2025 based on average salary.")
-   .style("font-size", "12px");
+   .attr("text-anchor", "middle")
+   .style("font-size", "13px")
+   .text("These are the 2025 job titles with the highest average salaries.");
+}
 }
 
 function drawScene2(data) {
@@ -134,7 +140,7 @@ function updateScene2Job(jobTitle) {
   const avgSalary = d3.rollups(filtered, v => d3.mean(v, d => d.salary_in_usd), d => d.experience_level);
   const levels = ["EN", "MI", "SE", "EX"];
 
-  const margin = { top: 40, right: 30, bottom: 70, left: 100 };
+  const margin = { top: 60, right: 30, bottom: 90, left: 100 };
   const width = 800 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -142,12 +148,21 @@ function updateScene2Job(jobTitle) {
               .domain(levels)
               .range([0, width])
               .padding(0.2);
-
   const y = d3.scaleLinear()
               .domain([0, d3.max(avgSalary, d => d[1])])
               .range([height, 0]);
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // title
+  g.append("text")
+   .attr("x", width / 2)
+   .attr("y", -30)
+   .attr("text-anchor", "middle")
+   .style("font-size", "18px")
+   .style("font-weight", "600")
+   .text(`Average Salary by Experience — ${jobTitle}`);
+
   g.append("g").call(d3.axisLeft(y));
   g.append("g")
    .attr("transform", `translate(0,${height})`)
@@ -163,19 +178,14 @@ function updateScene2Job(jobTitle) {
    .attr("height", d => height - y(d[1]))
    .attr("fill", "#ff9933");
 
+  // annotation
   g.append("text")
    .attr("x", width / 2)
-   .attr("y", -10)
-   .attr("text-anchor", "middle")
-   .text(`Average Salary by Experience for ${jobTitle}`)
-   .style("font-size", "16px")
-   .style("font-weight", "bold");
-
-  g.append("text")
-   .attr("x", 0)
    .attr("y", height + 50)
-   .text("Experience levels: EN = Entry, MI = Mid, SE = Senior, EX = Executive")
-   .style("font-size", "12px");
+   .attr("text-anchor", "middle")
+   .style("font-size", "13px")
+   .text("EN = Entry · MI = Mid · SE = Senior · EX = Executive");
+}
 }
 
 function drawScene3(data) {
@@ -187,27 +197,25 @@ function drawScene3(data) {
                 .attr("height", 600);
 
   const groups = d3.groups(data, d => d.remote_ratio);
-  const result = groups.map(([key, values]) => {
-    return {
-      remote_ratio: key,
-      avg_salary: d3.mean(values, d => d.salary_in_usd)
-    };
-  });
+  const result = groups.map(([key, values]) => ({ remote_ratio: key, avg_salary: d3.mean(values, d => d.salary_in_usd) }));
 
-  const margin = { top: 40, right: 30, bottom: 70, left: 100 };
+  const margin = { top: 60, right: 30, bottom: 90, left: 100 };
   const width = 800 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
-  const x = d3.scaleBand()
-              .domain(result.map(d => d.remote_ratio))
-              .range([0, width])
-              .padding(0.2);
-
-  const y = d3.scaleLinear()
-              .domain([0, d3.max(result, d => d.avg_salary)])
-              .range([height, 0]);
+  const x = d3.scaleBand().domain(result.map(d => d.remote_ratio)).range([0, width]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, d3.max(result, d => d.avg_salary)]).range([height, 0]);
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+  // title
+  g.append("text")
+   .attr("x", width / 2)
+   .attr("y", -30)
+   .attr("text-anchor", "middle")
+   .style("font-size", "18px")
+   .style("font-weight", "600")
+   .text("Average Salary by Remote Ratio");
 
   g.append("g").call(d3.axisLeft(y));
   g.append("g")
@@ -224,19 +232,16 @@ function drawScene3(data) {
    .attr("height", d => height - y(d.avg_salary))
    .attr("fill", "#2ca02c");
 
+  // annotation
   g.append("text")
    .attr("x", width / 2)
-   .attr("y", -10)
-   .attr("text-anchor", "middle")
-   .text("Average Salary by Remote Ratio")
-   .style("font-size", "16px")
-   .style("font-weight", "bold");
-
-  g.append("text")
-   .attr("x", 0)
    .attr("y", height + 50)
-   .text("Remote ratio: 0% = fully onsite, 50% = hybrid, 100% = fully remote")
-   .style("font-size", "12px");
+   .attr("text-anchor", "middle")
+   .style("font-size", "13px")
+   .text("0% = onsite · 50% = hybrid · 100% = fully remote");
+
+  updateButtons();
+}
 
   updateButtons();
 }
