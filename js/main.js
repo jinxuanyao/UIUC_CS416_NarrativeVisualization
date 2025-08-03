@@ -43,7 +43,7 @@ function drawScene1(data) {
   const svg = d3.select("#viz")
                 .append("svg")
                 .attr("width", 800)
-                .attr("height", 500);
+                .attr("height", 600);
 
   const jobAvg = d3.rollups(data, v => d3.mean(v, d => d.salary_in_usd), d => d.job_title);
   const top5 = jobAvg.sort((a, b) => d3.descending(a[1], b[1])).slice(0, 5);
@@ -64,7 +64,6 @@ function drawScene1(data) {
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
   g.append("g").call(d3.axisLeft(y));
-
   g.append("g")
    .attr("transform", `translate(0,${height})`)
    .call(d3.axisBottom(x))
@@ -103,7 +102,7 @@ function drawScene2(data) {
   const svg = d3.select("#viz")
                 .append("svg")
                 .attr("width", 800)
-                .attr("height", 500);
+                .attr("height", 600);
 
   const allJobs = [...new Set(data.map(d => d.job_title))].sort();
   const dropdown = d3.select("#jobSelector");
@@ -129,7 +128,7 @@ function updateScene2Job(jobTitle) {
   const svg = d3.select("#viz")
                 .append("svg")
                 .attr("width", 800)
-                .attr("height", 500);
+                .attr("height", 600);
 
   const filtered = dataset.filter(d => d.job_title === jobTitle);
   const avgSalary = d3.rollups(filtered, v => d3.mean(v, d => d.salary_in_usd), d => d.experience_level);
@@ -150,7 +149,6 @@ function updateScene2Job(jobTitle) {
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
   g.append("g").call(d3.axisLeft(y));
-
   g.append("g")
    .attr("transform", `translate(0,${height})`)
    .call(d3.axisBottom(x));
@@ -176,7 +174,7 @@ function updateScene2Job(jobTitle) {
   g.append("text")
    .attr("x", 0)
    .attr("y", height + 50)
-   .text("Experience levels: EN=Entry, MI=Mid, SE=Senior, EX=Executive")
+   .text("Experience levels: EN = Entry, MI = Mid, SE = Senior, EX = Executive")
    .style("font-size", "12px");
 }
 
@@ -186,7 +184,7 @@ function drawScene3(data) {
   const svg = d3.select("#viz")
                 .append("svg")
                 .attr("width", 800)
-                .attr("height", 500);
+                .attr("height", 600);
 
   const groups = d3.groups(data, d => d.remote_ratio);
   const result = groups.map(([key, values]) => {
