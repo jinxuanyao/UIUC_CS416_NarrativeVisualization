@@ -31,6 +31,7 @@ function prevScene() {
 }
 
 function drawScene1(data) {
+  d3.select("#jobSelector").style("display", "none");
   const svg = d3.select("#viz")
                 .append("svg")
                 .attr("width", 800)
