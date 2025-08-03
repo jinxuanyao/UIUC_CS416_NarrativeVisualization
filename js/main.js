@@ -107,7 +107,7 @@ function drawScene1(data) {
   // annotation
   g.append("text")
     .attr("x", width / 2)
-    .attr("y", height + 100)  // 70 → 100
+    .attr("y", height + 110)  // 70 → 110
     .attr("text-anchor", "middle")
     .style("font-size", 13)
     .text("These are the 5 highest-paid job titles in 2025 by average salary.");
