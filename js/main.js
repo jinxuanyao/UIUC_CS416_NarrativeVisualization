@@ -168,3 +168,4 @@ function drawScene3 (data) {
     .style("font-size",13)
     .text("0% = onsite · 50% = hybrid · 100% = fully remote");
 }
+ 
