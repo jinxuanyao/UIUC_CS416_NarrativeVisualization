@@ -50,7 +50,7 @@ function drawScene1(data) {
 
   const svg = d3.select("#viz").append("svg")
     .attr("width", 800)
-    .attr("height", 650);  // height
+    .attr("height", 700);  // 650 → 700
 
   const margin = { top: 60, right: 30, bottom: 130, left: 100 };
   const width = 800 - margin.left - margin.right;
@@ -59,7 +59,6 @@ function drawScene1(data) {
   const g = svg.append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // data processing
   const top5 = d3.rollups(data, v => d3.mean(v, d => d.salary_in_usd), d => d.job_title)
     .sort((a, b) => d3.descending(a[1], b[1]))
     .slice(0, 5);
@@ -73,7 +72,6 @@ function drawScene1(data) {
     .domain([0, d3.max(top5, d => d[1])])
     .range([height, 0]);
 
-  // title
   g.append("text")
     .attr("x", width / 2)
     .attr("y", -30)
@@ -82,7 +80,6 @@ function drawScene1(data) {
     .style("font-weight", 600)
     .text("Top 5 Job Titles by Avg Salary (USD) in 2025");
 
-  // axes
   g.append("g").call(d3.axisLeft(y));
   g.append("g")
     .attr("transform", `translate(0,${height})`)
@@ -91,7 +88,6 @@ function drawScene1(data) {
     .attr("transform", "rotate(-30)")
     .style("text-anchor", "end");
 
-  // rect
   g.selectAll("rect")
     .data(top5)
     .enter().append("rect")
@@ -103,7 +99,7 @@ function drawScene1(data) {
 
   g.append("rect")
     .attr("x", width / 2 - 220)
-    .attr("y", height + 50)
+    .attr("y", height + 70)  // 60 → 70
     .attr("width", 440)
     .attr("height", 30)
     .attr("fill", "#f9f9f9");
@@ -111,11 +107,12 @@ function drawScene1(data) {
   // annotation
   g.append("text")
     .attr("x", width / 2)
-    .attr("y", height + 70)
+    .attr("y", height + 90)  // 70 → 90
     .attr("text-anchor", "middle")
     .style("font-size", 13)
     .text("These are the 5 highest-paid job titles in 2025 by average salary.");
 }
+
 
 
 //------------------------------------
