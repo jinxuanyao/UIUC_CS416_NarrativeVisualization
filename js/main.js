@@ -177,33 +177,46 @@ function updateScene2Job(jobTitle) {
 //------------------------------------
 //  SCENE 3  —  Remote Ratio vs Salary
 //------------------------------------
-function drawScene3 (data) {
-  d3.select("#jobSelector").style("display","none");
+// Updated drawScene3 with content-based annotation
+function drawScene3(data) {
+  d3.select("#jobSelector").style("display", "none");
 
-  const svg    = d3.select("#viz").append("svg").attr("width",800).attr("height",600);
-  const margin = {top:60,right:30,bottom:110,left:100}, width=800-margin.left-margin.right, height=500-margin.top-margin.bottom;
-  const g      = svg.append("g").attr("transform",`translate(${margin.left},${margin.top})`);
+  const svg = d3.select("#viz").append("svg")
+    .attr("width", 900)
+    .attr("height", 700);
 
-  const grouped = d3.groups(data,d=>d.remote_ratio).map(([k,v])=>({remote:k,avg:d3.mean(v,d=>d.salary_in_usd)}));
-  const x = d3.scaleBand().domain(grouped.map(d=>d.remote)).range([0,width]).padding(0.2);
-  const y = d3.scaleLinear().domain([0,d3.max(grouped,d=>d.avg)]).range([height,0]);
+  const margin = { top: 60, right: 250, bottom: 130, left: 100 };
+  const width = 900 - margin.left - margin.right;
+  const height = 600 - margin.top - margin.bottom;
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // title
-  g.append("text").attr("x",width/2).attr("y",-30).attr("text-anchor","middle")
-    .style("font-size",18).style("font-weight",600)
+  const grouped = d3.groups(data, d => d.remote_ratio).map(([k, v]) => ({ remote: k, avg: d3.mean(v, d => d.salary_in_usd) }));
+  const x = d3.scaleBand().domain(grouped.map(d => d.remote)).range([0, width]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, d3.max(grouped, d => d.avg)]).range([height, 0]);
+
+  g.append("text").attr("x", width / 2).attr("y", -30).attr("text-anchor", "middle")
+    .style("font-size", 18).style("font-weight", 600)
     .text("Average Salary by Remote Ratio");
 
   g.append("g").call(d3.axisLeft(y));
-  g.append("g").attr("transform",`translate(0,${height})`).call(d3.axisBottom(x).tickFormat(d=>`${d}%`));
+  g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x).tickFormat(d => `${d}%`));
 
   g.selectAll("rect").data(grouped).enter().append("rect")
-    .attr("x",d=>x(d.remote)).attr("y",d=>y(d.avg))
-    .attr("width",x.bandwidth()).attr("height",d=>height-y(d.avg))
-    .attr("fill","#2ca02c");
+    .attr("x", d => x(d.remote)).attr("y", d => y(d.avg))
+    .attr("width", x.bandwidth()).attr("height", d => height - y(d.avg))
+    .attr("fill", "#2ca02c");
 
-  g.append("text")
-    .attr("x",width/2).attr("y",height+60).attr("text-anchor","middle")
-    .style("font-size",13)
-    .text("0% = onsite · 50% = hybrid · 100% = fully remote");
+  svg.append("foreignObject")
+    .attr("x", width + margin.left + 10)
+    .attr("y", margin.top + 40)
+    .attr("width", 220)
+    .attr("height", 200)
+    .append("xhtml:div")
+    .style("font-size", "13px")
+    .style("color", "#333")
+    .html(`<strong>Insight:</strong><br>
+      Remote roles (100%) tend to offer higher average salaries.<br>
+      This suggests companies may be willing to pay more for remote flexibility.`);
 }
+
  
