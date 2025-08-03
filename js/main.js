@@ -208,15 +208,15 @@ function drawScene3(data) {
 
   svg.append("foreignObject")
     .attr("x", width + margin.left + 10)
-    .attr("y", margin.top + 40)
-    .attr("width", 220)
-    .attr("height", 200)
+    .attr("y", margin.top + 60)
+    .attr("width", 240)
+    .attr("height", 240)
     .append("xhtml:div")
     .style("font-size", "13px")
     .style("color", "#333")
     .html(`<strong>Insight:</strong><br>
-      Remote roles (100%) tend to offer higher average salaries.<br>
-      This suggests companies may be willing to pay more for remote flexibility.`);
+      X-axis shows remote work percentage: 0% = onsite, 50% = hybrid, 100% = fully remote.<br><br>
+      Surprisingly, both 0% and 100% remote roles have higher salaries, while 50% hybrid roles show the lowest average pay.`);
 }
 
  
