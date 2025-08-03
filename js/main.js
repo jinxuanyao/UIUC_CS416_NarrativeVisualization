@@ -11,6 +11,7 @@ d3.csv("data/salaries.csv").then(data => {
   });
   dataset = data.filter(d => d.work_year === "2025");
   scenes[currentScene](dataset);
+  updateButtons();
 });
 
 function updateButtons() {
