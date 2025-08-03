@@ -1,1 +1,23 @@
-<h1>Hello!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>2025 Data Science Salaries</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/d3-annotation@2.5.1/dist/d3-annotation.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>2025 Data Science Salaries</h1>
+
+  <div id="controls">
+    <button onclick="prevScene()">Previous</button>
+    <button onclick="nextScene()">Next</button>
+    <select id="jobSelector" style="display: none;" onchange="updateScene2Job(this.value)"></select>
+  </div>
+
+  <div id="viz"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
