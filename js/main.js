@@ -27,7 +27,7 @@ function prevScene() {
   }
 }
 
-// Scene 1 – Top job titles by average salary
+// Scene 1 – Top 5 job titles by average salary
 function drawScene1(data) {
   const svg = d3.select("#viz")
                 .append("svg")
@@ -52,8 +52,7 @@ function drawScene1(data) {
 
   const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  g.append("g")
-   .call(d3.axisLeft(y));
+  g.append("g").call(d3.axisLeft(y));
 
   g.append("g")
    .attr("transform", `translate(0,${height})`)
@@ -81,11 +80,11 @@ function drawScene1(data) {
    .style("font-weight", "bold");
 }
 
-
 function drawScene2(data) {
-  d3.select("#viz").append("p").text("Scene 2 placeholder...");
+  d3.select("#viz").append("p").text("Scene 2 coming soon...");
 }
 function drawScene3(data) {
-  d3.select("#viz").append("p").text("Scene 3 placeholder...");
+  d3.select("#viz").append("p").text("Scene 3 coming soon...");
 }
-
+function updateScene2Job(job) {
+}
