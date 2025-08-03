@@ -1,5 +1,3 @@
-// main.js  — fully rewritten, syntax‑error‑free  ---------------------------
-
 // GLOBAL STATE
 let currentScene = 0;               // 0‑based index of current scene
 let dataset       = [];             // filtered 2025 data
@@ -52,7 +50,9 @@ function drawScene1 (data) {
 
   const svg    = d3.select("#viz").append("svg").attr("width",800).attr("height",600);
   const margin = {top:60,right:30,bottom:110,left:100}, width=800-margin.left-margin.right, height=500-margin.top-margin.bottom;
-  const g      = svg.append("g").attr("transform`, `translate(${margin.left},${margin.top})");
+  const g = svg.append("g")
+               .attr("transform", `translate(${margin.left},${margin.top})`);
+
 
   // Data prep
   const top5 = d3.rollups(data,v=>d3.mean(v,d=>d.salary_in_usd),d=>d.job_title)
