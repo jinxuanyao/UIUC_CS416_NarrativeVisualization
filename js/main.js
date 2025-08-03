@@ -117,53 +117,60 @@ function drawScene1(data) {
 //------------------------------------
 //  SCENE 2  —  Experience vs Salary w/ Dropdown
 //------------------------------------
-function drawScene2 (data) {
-  // show dropdown
-  const selector = d3.select("#jobSelector").style("display","inline-block");
+// Updated drawScene2 with instruction annotation
+function drawScene2(data) {
+  const selector = d3.select("#jobSelector").style("display", "inline-block");
 
-  // build dropdown options once
-  const jobs = [...new Set(data.map(d=>d.job_title))].sort();
+  const jobs = [...new Set(data.map(d => d.job_title))].sort();
   selector.selectAll("option").data(jobs).join("option")
-          .attr("value",d=>d).text(d=>d);
-  selector.on("change",function(){ updateScene2Job(this.value); });
+          .attr("value", d => d).text(d => d);
+  selector.on("change", function () { updateScene2Job(this.value); });
 
   updateScene2Job(jobs[0]);
 }
 
-function updateScene2Job (jobTitle) {
+function updateScene2Job(jobTitle) {
   d3.select("#viz svg").remove();
 
-  const svg    = d3.select("#viz").append("svg").attr("width",800).attr("height",600);
-  const margin = {top:60,right:30,bottom:110,left:100}, width=800-margin.left-margin.right, height=500-margin.top-margin.bottom;
-  const g      = svg.append("g").attr("transform",`translate(${margin.left},${margin.top})`);
+  const svg = d3.select("#viz").append("svg")
+    .attr("width", 900)
+    .attr("height", 700);
 
-  const filtered = dataset.filter(d=>d.job_title===jobTitle);
-  const avg      = d3.rollups(filtered,v=>d3.mean(v,d=>d.salary_in_usd),d=>d.experience_level);
-  const levels   = ["EN","MI","SE","EX"];
+  const margin = { top: 60, right: 250, bottom: 130, left: 100 };
+  const width = 900 - margin.left - margin.right;
+  const height = 600 - margin.top - margin.bottom;
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
 
-  const x = d3.scaleBand().domain(levels).range([0,width]).padding(0.2);
-  const y = d3.scaleLinear().domain([0,d3.max(avg,d=>d[1])]).range([height,0]);
+  const filtered = dataset.filter(d => d.job_title === jobTitle);
+  const avg = d3.rollups(filtered, v => d3.mean(v, d => d.salary_in_usd), d => d.experience_level);
+  const levels = ["EN", "MI", "SE", "EX"];
 
-  // title
-  g.append("text").attr("x",width/2).attr("y",-30).attr("text-anchor","middle")
-    .style("font-size",18).style("font-weight",600)
+  const x = d3.scaleBand().domain(levels).range([0, width]).padding(0.2);
+  const y = d3.scaleLinear().domain([0, d3.max(avg, d => d[1])]).range([height, 0]);
+
+  g.append("text").attr("x", width / 2).attr("y", -30).attr("text-anchor", "middle")
+    .style("font-size", 18).style("font-weight", 600)
     .text(`Average Salary by Experience — ${jobTitle}`);
 
-  // axes
   g.append("g").call(d3.axisLeft(y));
-  g.append("g").attr("transform",`translate(0,${height})`).call(d3.axisBottom(x));
+  g.append("g").attr("transform", `translate(0,${height})`).call(d3.axisBottom(x));
 
-  // bars
   g.selectAll("rect").data(avg).enter().append("rect")
-    .attr("x",d=>x(d[0])).attr("y",d=>y(d[1]))
-    .attr("width",x.bandwidth()).attr("height",d=>height-y(d[1]))
-    .attr("fill","#ff9933");
+    .attr("x", d => x(d[0])).attr("y", d => y(d[1]))
+    .attr("width", x.bandwidth()).attr("height", d => height - y(d[1]))
+    .attr("fill", "#ff9933");
 
-  // annotation
-  g.append("text")
-    .attr("x",width/2).attr("y",height+60).attr("text-anchor","middle")
-    .style("font-size",13)
-    .text("EN = Entry · MI = Mid · SE = Senior · EX = Executive");
+  svg.append("foreignObject")
+    .attr("x", width + margin.left + 10)
+    .attr("y", margin.top + 40)
+    .attr("width", 220)
+    .attr("height", 200)
+    .append("xhtml:div")
+    .style("font-size", "13px")
+    .style("color", "#333")
+    .html(`<strong>Instruction:</strong><br>
+      Use the dropdown menu above to view salary trends by experience level for each job title.<br>
+      EN = Entry · MI = Mid · SE = Senior · EX = Executive.`);
 }
 
 //------------------------------------
