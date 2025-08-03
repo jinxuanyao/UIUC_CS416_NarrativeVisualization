@@ -1,6 +1,9 @@
+// main.js
 let currentScene = 0;
 let scenes = [drawScene1, drawScene2, drawScene3];
 let dataset = [];
+
+// Load and parse CSV
 
 d3.csv("data/salaries.csv").then(data => {
   data.forEach(d => {
@@ -27,7 +30,6 @@ function prevScene() {
   }
 }
 
-// Scene 1 – Top 5 job titles by average salary
 function drawScene1(data) {
   const svg = d3.select("#viz")
                 .append("svg")
