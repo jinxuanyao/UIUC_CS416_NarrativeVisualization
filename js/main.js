@@ -107,7 +107,7 @@ function drawScene1(data) {
     .append("xhtml:div")
     .style("font-size", "13px")
     .style("color", "#333")
-    .html(`<strong>Interpretation:</strong><br>
+    .html(`<strong>Insight:</strong><br>
       X-axis shows the job titles with the highest average salaries.<br>
       These are the 5 highest-paid job titles in 2025 by average salary.<br>
       We can see it's over 250,000 per year.`);
