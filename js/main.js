@@ -51,7 +51,7 @@ function drawScene1(data) {
 
   const svg = d3.select("#viz").append("svg")
     .attr("width", 900)  // Increased width to allow annotation on right
-    .attr("height", 700);
+    .attr("height", 720); // increased height
 
   const margin = { top: 60, right: 250, bottom: 130, left: 100 };  // wider right margin for side annotation
   const width = 900 - margin.left - margin.right;
@@ -101,17 +101,17 @@ function drawScene1(data) {
   // Side annotation
   svg.append("foreignObject")
     .attr("x", width + margin.left + 10)
-    .attr("y", margin.top)
+    .attr("y", margin.top + 40)  // pushed further down
     .attr("width", 200)
     .attr("height", 200)
     .append("xhtml:div")
     .style("font-size", "13px")
     .style("color", "#333")
     .html(`<strong>Interpretation:</strong><br>
-      X-axis shows the job titles with highest average salaries.<br>
-      These are the 5 highest-paid job titles in 2025 by average salary. We can see it's over 250,000 per year.`);
+      X-axis shows the job titles with the highest average salaries.<br>
+      These are the 5 highest-paid job titles in 2025 by average salary.<br>
+      We can see it's over 250,000 per year.`);
 }
-
 
 
 //------------------------------------
