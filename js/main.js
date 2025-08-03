@@ -173,6 +173,7 @@ function updateScene2Job(jobTitle) {
       EN = Entry · MI = Mid · SE = Senior · EX = Executive.`);
 }
 
+
 //------------------------------------
 //  SCENE 3  —  Remote Ratio vs Salary
 //------------------------------------
